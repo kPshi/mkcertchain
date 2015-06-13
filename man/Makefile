@@ -9,7 +9,7 @@ MANPAGES = man1/mkcertchain.1
 all: $(MANPAGES)
 
 man1/mkcertchain.1: ../bin/mkcertchain
-	pod2man $< > $@
+	pod2man ../bin/mkcertchain > $@
 
 clean:
 	rm -f $(MANPAGES)
