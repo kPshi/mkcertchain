@@ -32,7 +32,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use IPC::Run3;
-use LWPx::ParanoidAgent;
+use LWP::UserAgent;
 use FindBin;
 
 use version; our $VERSION = version->declare('0.1.1');
@@ -57,7 +57,7 @@ if ($glop->{version}) {
 our @chains;
 our $CA_FILE = $glop->{'ca-file'} // "$FindBin::Bin/../share/mkcertchain/browser_roots.pem";
 
-my $ua = LWPx::ParanoidAgent->new();
+my $ua = LWP::UserAgent->new();
 $ua->timeout(15);
 
 sub deduce_cert_type {
@@ -185,6 +185,7 @@ sub process {
 	}
 
 	for my $uri (get_ca_issuer_uris($last_cert)) {
+    $uri =~ /^https?:/i or next;
 		for my $cert (download($uri)) {
 			process([ @$chain, $cert ]);
 		}
